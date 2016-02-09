@@ -6,7 +6,7 @@ This project can be used in conjunction with a docker-compose file, or simply by
 
     $ docker build
 
-Further, I would recommend naming this container so that it is easier to access and run commands inside. To see this in action in a full project checkout this (Craft setup using Docker and this development container)[https://github.com/Skilgarriff/docker-craft]
+Further, I would recommend naming this container so that it is easier to access and run commands inside. To see this in action in a full project checkout this [Craft setup using Docker and this development container](https://github.com/Skilgarriff/docker-craft)
 
 ##Notes
 
