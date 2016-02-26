@@ -1,7 +1,7 @@
 version: '2'
 services:
     develop:
-        build: .
+        build: ./compose/develop
         volumes:
             -   ./gulp:/usr/src/app
         ports:
