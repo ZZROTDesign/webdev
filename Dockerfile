@@ -1,4 +1,4 @@
-FROM node:argon
+FROM node:latest
 
 #Copy over, and grant executable permission to the startup script
 COPY ./entrypoint.sh /
