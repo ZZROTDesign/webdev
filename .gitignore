@@ -1,2 +1,4 @@
 #Ignore .DS_Store Files
 .DS_Store
+#Ignore npm node_modules
+node_modules

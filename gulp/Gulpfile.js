@@ -2,36 +2,40 @@
 "use strict";
 
 /*
+* On installation of this gulpfile, edit the default task. This task
+* is run on startup of the docker-developer container. Further tasks
+* can be run by using the command docker run dev gulp (task).
+*
+*
+*/
+
+/*
 *
 *
 * Paths
-*
+* if extra paths are needed for the project, add them here.
 *
 */
 var paths = {
     scripts: {
         input: 'dev/assets/js/**/*.js',
-        output: 'dist/js'
+        output: 'public/js'
     },
     styles: {
         input: 'dev/assets/styles/**/*.{scss,sass}',
-        output: 'dist/css'
+        output: 'public/css'
     },
     html: {
-        input: 'dev/templates/**/*.html',
-        output: 'craft/templates'
+        input: 'dev/**/*.html',
+        output: 'public/'
     },
     images: {
         input: 'dev/assets/images/**/*',
-        output: 'dist/images'
+        output: 'public/images'
     },
     extras: {
-        input: ['dev/extras/*', 'dev/index.php'],
-        output: 'dist/'
-    },
-    plugins: {
-        input: 'dev/plugins/**/*',
-        output: 'craft/plugins'
+        input: ['dev/extras/*'],
+        output: 'public/'
     }
 };
 
@@ -80,7 +84,7 @@ var browserSync = require("browser-sync").create();
 * cleans out all files that may no longer exist in dev
 */
 gulp.task('clean', function () {
-    return gulp.src('dist/', {read: false})
+    return gulp.src('public/', {read: false})
         .pipe(clean());
 });
 
@@ -90,13 +94,7 @@ gulp.task('clean', function () {
 *
 */
 //Master move task
-gulp.task('move', ['move-extras', 'move-plugins']);
-
-//Moves Craft plugins
-gulp.task('move-plugins', function () {
-    return gulp.src(paths.plugins.input)
-        .pipe(gulp.dest(paths.plugins.output));
-});
+gulp.task('move', ['move-extras']);
 
 //Extra files - robot.txt, etc
 gulp.task('move-extras', function () {
@@ -107,7 +105,7 @@ gulp.task('move-extras', function () {
 /*
 *
 * HTML
-* Minifies html, and moves it into the craft templates folder
+* Minifies html
 */
 gulp.task('html', function () {
     return gulp.src(paths.html.input)
@@ -189,5 +187,6 @@ gulp.task('watch', function () {
 
 });
 
-//Default Task. - Clean, then recompile every asset on startup, then start watch
-gulp.task('default', ['clean', 'move', 'browser-sync', 'html', 'sass', 'imagemin', 'js', 'watch']);
+//Default Task. -
+//Add all the tasks you would like to run on startup of the container here.
+gulp.task('default', ['move', 'browser-sync', 'sass', 'imagemin', 'js', 'watch']);

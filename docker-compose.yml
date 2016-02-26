@@ -1,0 +1,8 @@
+version: '2'
+services:
+    develop:
+        build: ./compose/develop
+        volumes:
+            -   ./gulp:/usr/src/app
+        ports:
+            - 3001:3001
