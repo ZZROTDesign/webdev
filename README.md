@@ -4,9 +4,11 @@ This is a Dockerfile for a container that is run specifically for the developmen
 ##Usage
 This project can be used in conjunction with a docker-compose file, or simply by itself. To run this container build it through docker.
 
-    $ docker build
+    $ docker build .
 
-Further, I would recommend naming this container so that it is easier to access and run commands inside. To see this in action in a full project checkout this [Craft setup using Docker and this development container](https://github.com/Skilgarriff/docker-craft)
+Further, I would recommend naming this container so that it is easier to access and run commands inside.
+
+A docker-compose.yml has also been provided with the necessary inputs to run this in a different project. Copy the code contained in that file to your docker-compose.yml for your project. 
 
 ##Notes
 
