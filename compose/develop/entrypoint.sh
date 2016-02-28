@@ -9,7 +9,7 @@ npm install
 
 #For updating
 #npm install -g npm-check-updates
-#ncu -d -u
+#ncu -d -u --packageData
 
 #Run our default Gulp task.
 gulp
