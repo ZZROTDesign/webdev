@@ -11,5 +11,7 @@ npm install
 #npm install -g npm-check-updates
 #ncu -d -u --packageData
 
+npm install --save-dev gulp-htmlhint
+
 #Run our default Gulp task.
 gulp
