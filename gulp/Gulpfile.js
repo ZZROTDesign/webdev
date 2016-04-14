@@ -75,6 +75,10 @@ var uglify = require('gulp-uglify');
 //Browsersync
 var browserSync = require("browser-sync").create();
 
+//Linters //TODO: Finish adding in Html Linter. Make sure that rest of task fails if this fails. https://www.npmjs.com/package/gulp-htmlhint
+var htmlhint = require("gulp-htmlhint");
+
+
 
 
 /*
