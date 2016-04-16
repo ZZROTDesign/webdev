@@ -19,7 +19,6 @@ WORKDIR /usr/src/app/
 RUN npm update \
 		&& npm install \
 		&& npm cache clean \
-		&& gem install rdoc \
 		&& gem install --no-rdoc --no-ri scss_lint
 
 #Copy over, and grant executable permission to the startup script
