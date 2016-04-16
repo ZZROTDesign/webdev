@@ -1,6 +1,12 @@
 FROM alpine:edge
+MAINTAINER ZZROT LLC <docker@zzrot.com>
 
-RUN apk --no-cache add nodejs ruby git python make g++
+
+ENV BUILD_PACKAGES nodejs bash curl-dev ruby-dev build-base git python
+ENV RUBY_PACKAGES ruby ruby-io-console ruby-bundler
+
+RUN apk --no-cache add $BUILD_PACKAGES \
+		&& apk --no-cache add $RUBY_PACKAGES
 
 #Copy over the default Package.json
 COPY ./gulp/package.json /usr/src/app/
@@ -13,7 +19,8 @@ WORKDIR /usr/src/app/
 RUN npm update \
 		&& npm install \
 		&& npm cache clean \
-		&& gem install scss_lint
+		&& gem install rdoc \
+		&& gem install --no-rdoc --no-ri scss_lint
 
 #Copy over, and grant executable permission to the startup script
 COPY ./entrypoint.sh /
