@@ -4,4 +4,4 @@ cd /usr/src/app
 #For updating
 npm install -g npm-check-updates
 
-ncu -u --packageFile package.json
+ncu -u -a --packageFile package.json
