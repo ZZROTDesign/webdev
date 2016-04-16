@@ -1,2 +1,6 @@
 update/
 test/
+.gitignore
+docker-compose.travis.yml
+LICENSE
+README.md
