@@ -1,17 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 cd /usr/src/app
 
-#Need to install Gulp CLI globally.
+# Install Gulp CLI globally.
 npm install -g gulp
 
-#Install all packages from Package.json.
+#Install any additional packages from 3rd party package.json
 npm install
 
-#For updating
-#npm install -g npm-check-updates
-#ncu -d -u --packageData
-
-npm install --save-dev gulp-htmlhint
+#Clean the npm cache
+npm cache clean
 
 #Run our default Gulp task.
 gulp
