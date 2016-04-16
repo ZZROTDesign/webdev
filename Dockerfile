@@ -10,7 +10,10 @@ COPY ./gulp/Gulpfile.js /usr/src/app/
 
 WORKDIR /usr/src/app/
 
-RUN npm update && npm install && npm cache clean
+RUN npm update \
+		&& npm install \
+		&& npm cache clean \
+		&& gem install scss_lint
 
 #Copy over, and grant executable permission to the startup script
 COPY ./entrypoint.sh /
