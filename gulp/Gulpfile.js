@@ -2,14 +2,6 @@
 "use strict";
 
 /*
-* On installation of this gulpfile, edit the default task. This task
-* is run on startup of the docker-developer container. Further tasks
-* can be run by using the command docker run dev gulp (task).
-*
-*
-*/
-
-/*
 *
 *
 * Paths
@@ -76,8 +68,8 @@ var uglify = require('gulp-uglify');
 var browserSync = require("browser-sync").create();
 
 //Linters
-var scss-lint = require("gulp-scss-lint");
-var jslint = require("gulp-jslint");
+var scssLint = require("gulp-scss-lint");
+var eslint = require('gulp-eslint');
 
 
 
@@ -161,7 +153,7 @@ gulp.task('imagemin', function () {
 
 // LINTER
 gulp.task('jslint', function () {
-		return gulp.
+    return gulp;
 });
 
 gulp.task('js', function () {
