@@ -75,8 +75,10 @@ var uglify = require('gulp-uglify');
 //Browsersync
 var browserSync = require("browser-sync").create();
 
-//Linters //TODO: Finish adding in Html Linter. Make sure that rest of task fails if this fails. https://www.npmjs.com/package/gulp-htmlhint
-var htmlhint = require("gulp-htmlhint");
+//Linters
+var scss-lint = require("gulp-scss-lint");
+var jslint = require("gulp-jslint");
+
 
 
 
@@ -156,6 +158,12 @@ gulp.task('imagemin', function () {
 * JAVASCRIPT
 *
 */
+
+// LINTER
+gulp.task('jslint', function () {
+		return gulp.
+});
+
 gulp.task('js', function () {
     return gulp.src(paths.scripts.input)
         .pipe(concat('main.min.js'))
