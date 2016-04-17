@@ -2,3 +2,5 @@ version: '2'
 services:
     develop:
         build: .
+        volumes:
+          - ./test/package.json:/usr/src/app/package.json
