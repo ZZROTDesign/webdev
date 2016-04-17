@@ -2,7 +2,7 @@ FROM alpine:edge
 MAINTAINER ZZROT LLC <docker@zzrot.com>
 
 
-ENV BUILD_PACKAGES nodejs bash curl-dev ruby-dev build-base git python
+ENV BUILD_PACKAGES nodejs bash curl-dev ruby-dev build-base git python tar
 ENV RUBY_PACKAGES ruby ruby-io-console ruby-bundler
 
 RUN apk --no-cache add $BUILD_PACKAGES \
