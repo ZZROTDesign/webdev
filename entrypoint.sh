@@ -1,5 +1,5 @@
 #!/bin/sh
-cd /usr/src/app
+cd /usr/src/app || exit
 
 # Install Gulp CLI globally.
 npm install -g gulp

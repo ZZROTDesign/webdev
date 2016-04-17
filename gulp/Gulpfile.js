@@ -152,11 +152,14 @@ gulp.task('imagemin', function () {
 */
 
 // LINTER
-gulp.task('jslint', function () {
-    return gulp;
+gulp.task('eslint', function () {
+	return gulp.src(paths.scripts.input)
+			.pipe(eslint())
+			.pipe(eslint.format())
+			.pipe(eslint.failAfterError());
 });
 
-gulp.task('js', function () {
+gulp.task('js', ['eslint'], function () {
     return gulp.src(paths.scripts.input)
         .pipe(concat('main.min.js'))
         .pipe(uglify())
