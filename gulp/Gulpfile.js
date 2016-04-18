@@ -20,7 +20,8 @@ var paths = {
     },
     html: {
         input: 'app/dev/**/*.html',
-        output: 'app/public/'
+        output: 'app/public/',
+				partials: 'app/dev/partials'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -50,6 +51,7 @@ var flatten = require('gulp-flatten');
 
 //Html Plugins
 var htmlmin = require('gulp-htmlmin');
+var handlebars = require('gulp-compile-handlebars');
 
 //Sass plugins
 var sass = require('gulp-sass');
@@ -110,6 +112,21 @@ gulp.task('html', function () {
     return gulp.src(paths.html.input)
         .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest(paths.html.output));
+});
+
+
+
+//HANDLEBARS
+gulp.task('handlebars', function () {
+
+	options = {
+		ignorePartials: true,
+		batch : paths.html.partials
+	}
+
+	return gulp.src(paths.html.input)
+		.pipe(handlebars(options))
+		.pipe(gulp.dest(paths.html.output));
 });
 
 /*
