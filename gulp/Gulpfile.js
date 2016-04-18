@@ -10,24 +10,24 @@
 */
 var paths = {
     scripts: {
-        input: 'dev/assets/js/**/*.js',
-        output: 'public/js'
+        input: 'app/dev/assets/js/**/*.js',
+        output: 'app/public/js'
     },
     styles: {
-        input: 'dev/assets/styles/**/*.{scss,sass}',
-        output: 'public/css'
+        input: 'app/dev/assets/styles/**/*.{scss,sass}',
+        output: 'app/public/css'
     },
     html: {
-        input: 'dev/**/*.html',
-        output: 'public/'
+        input: 'app/dev/**/*.html',
+        output: 'app/public/'
     },
     images: {
-        input: 'dev/assets/images/**/*',
-        output: 'public/images'
+        input: 'app/dev/assets/images/**/*',
+        output: 'app/public/images'
     },
     extras: {
-        input: ['dev/extras/*'],
-        output: 'public/'
+        input: ['app/dev/extras/*'],
+        output: 'app/public/'
     }
 };
 
