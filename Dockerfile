@@ -18,6 +18,7 @@ WORKDIR /usr/src/
 
 RUN npm update \
 		&& npm install \
+		&& npm install -g gulp \
 		&& npm cache clean \
 		&& gem install --no-rdoc --no-ri scss_lint
 

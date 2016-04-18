@@ -1,9 +1,6 @@
 #!/bin/sh
 cd /usr/src || exit
 
-# Install Gulp CLI globally.
-npm install -g gulp
-
 #Install any additional packages from 3rd party package.json
 npm install
 
