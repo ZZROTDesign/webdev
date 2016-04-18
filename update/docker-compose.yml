@@ -3,4 +3,4 @@ services:
     update:
         build: .
         volumes:
-          - ../gulp:/usr/src/app/
+          - ../gulp:/usr/src/

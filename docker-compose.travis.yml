@@ -3,4 +3,4 @@ services:
     develop:
         build: .
         volumes:
-          - ./test/package.json:/usr/src/app/package.json
+          - ./test/package.json:/usr/src/package.json
