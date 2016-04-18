@@ -15,7 +15,8 @@ var paths = {
     },
     styles: {
         input: 'app/dev/assets/styles/**/*.{scss,sass}',
-        output: 'app/public/css'
+        output: 'app/public/css',
+				vendors: 'app/dev/assets/styles/vendor/*'
     },
     html: {
         input: 'app/dev/**/*.html',
@@ -113,10 +114,18 @@ gulp.task('html', function () {
 
 /*
 *
-* SASS
+* SCSS
 *
 */
-gulp.task('sass', function () {
+
+// LINTER
+
+gulp.task('scsslint', function () {
+	gulp.src([paths.styles.input, paths.styles.vendors])
+	  .pipe(scsslint());
+});
+
+gulp.task('scss', ['scsslint'], function () {
     return gulp.src(paths.styles.input)
         .pipe(sass({
             includePaths: [].concat(bourbon, neat)
@@ -190,7 +199,7 @@ gulp.task('watch', function () {
     gulp.watch(paths.html.input, ['html', 'browser-sync-reload']);
 
     //Watch Sass files
-    gulp.watch(paths.styles.input, ['sass']);
+    gulp.watch(paths.styles.input, ['scss']);
 
     //Watch JS files
     gulp.watch(paths.scripts.input, ['js']);
@@ -199,4 +208,4 @@ gulp.task('watch', function () {
 
 //Default Task. -
 //Add all the tasks you would like to run on startup of the container here.
-gulp.task('default', ['move', 'browser-sync', 'sass', 'imagemin', 'js', 'watch']);
+gulp.task('default', ['move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch']);
