@@ -52,7 +52,7 @@ var htmlmin = require('gulp-htmlmin');
 
 //Sass plugins
 var sass = require('gulp-sass');
-var minifycss = require('gulp-minify-css');
+var minifycss = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
 var bourbon = require('node-bourbon').includePaths;
 var neat = require('node-neat').includePaths;
