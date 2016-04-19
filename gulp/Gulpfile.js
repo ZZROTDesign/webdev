@@ -19,9 +19,10 @@ var paths = {
 		lint: ['app/dev/assets/styles/**/*.{scss,sass}, !app/dev/assets/style/vendor/**/*.{scss,sass}']
     },
     html: {
-        input: 'app/dev/**/*.{html,hbs}',
+        input: 'app/dev/**/*.html',
         output: 'app/public/',
-		partials: 'app/dev/partials'
+		partials: 'app/dev/partials',
+		hbs: 'app/dev/**/*.{html,hbs}'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -237,7 +238,7 @@ gulp.task('browser-sync-reload', function () {
 gulp.task('watch', function () {
 
     //Watch HTML files
-    gulp.watch(paths.html.input, ['handlebars', 'browser-sync-reload']);
+    gulp.watch(paths.html.hbs, ['handlebars', 'browser-sync-reload']);
 
     //Watch Sass files
     gulp.watch(paths.styles.input, ['scss']);
