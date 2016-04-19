@@ -160,7 +160,7 @@ gulp.task('handlebars', function () {
 // LINTER
 
 gulp.task('scsslint', function () {
-	gulp.src([paths.styles.input, paths.styles.vendors])
+	gulp.src([paths.styles.input, !paths.styles.vendors])
 	  .pipe(scsslint());
 });
 
