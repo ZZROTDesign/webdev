@@ -141,13 +141,15 @@ gulp.task('htmlbuild', function () {
 //HANDLEBARS
 gulp.task('handlebars', function () {
 
-	var options = {
+	var templateData = {
+	    },
+	options = {
 		ignorePartials: true,
 		batch : paths.html.partials
 	}
 
 	return gulp.src(paths.html.input)
-		.pipe(handlebars(options))
+		.pipe(handlebars(templateData, options))
 		.pipe(gulp.dest(paths.html.output));
 });
 
@@ -235,7 +237,7 @@ gulp.task('browser-sync-reload', function () {
 gulp.task('watch', function () {
 
     //Watch HTML files
-    gulp.watch(paths.html.input, ['html', 'browser-sync-reload']);
+    gulp.watch(paths.html.input, ['handlebars', 'browser-sync-reload']);
 
     //Watch Sass files
     gulp.watch(paths.styles.input, ['scss']);
