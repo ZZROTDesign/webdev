@@ -141,7 +141,7 @@ gulp.task('htmlbuild', function () {
 //HANDLEBARS
 gulp.task('handlebars', function () {
 
-	options = {
+	var options = {
 		ignorePartials: true,
 		batch : paths.html.partials
 	}
