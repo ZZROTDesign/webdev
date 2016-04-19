@@ -16,7 +16,7 @@ var paths = {
     styles: {
         input: 'app/dev/assets/styles/**/*.{scss,sass}',
         output: 'app/public/css',
-				vendors: 'app/dev/assets/styles/vendor/*'
+		vendors: 'app/dev/assets/styles/vendor/*'
     },
     html: {
         input: 'app/dev/**/*.html',
@@ -160,7 +160,7 @@ gulp.task('handlebars', function () {
 // LINTER
 
 gulp.task('scsslint', function () {
-	gulp.src([paths.styles.input, !paths.styles.vendors])
+	gulp.src(paths.styles.input, !paths.styles.vendors)
 	  .pipe(scsslint());
 });
 
