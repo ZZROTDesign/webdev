@@ -71,7 +71,7 @@ var uglify = require('gulp-uglify');
 var browserSync = require("browser-sync").create();
 
 //Linters
-var scssLint = require("gulp-scss-lint");
+var scsslint = require("gulp-scss-lint");
 var eslint = require('gulp-eslint');
 
 
