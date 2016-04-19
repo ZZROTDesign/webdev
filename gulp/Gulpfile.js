@@ -19,9 +19,9 @@ var paths = {
 		lint: ['app/dev/assets/styles/**/*.{scss,sass}, !app/dev/assets/style/vendor/**/*.{scss,sass}']
     },
     html: {
-        input: 'app/dev/**/*.html',
+        input: 'app/dev/**/*.{html,hbs}',
         output: 'app/public/',
-				partials: 'app/dev/partials'
+		partials: 'app/dev/partials'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
