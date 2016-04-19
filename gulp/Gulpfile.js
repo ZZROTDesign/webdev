@@ -52,6 +52,8 @@ var flatten = require('gulp-flatten');
 //Html Plugins
 var htmlmin = require('gulp-htmlmin');
 var handlebars = require('gulp-compile-handlebars');
+var sitemap = require('gulp-sitemap');
+var htmlbuild = require('gulp-htmlbuild');
 
 //Sass plugins
 var sass = require('gulp-sass');
@@ -111,6 +113,26 @@ gulp.task('move-extras', function () {
 gulp.task('html', function () {
     return gulp.src(paths.html.input)
         .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
+        .pipe(gulp.dest(paths.html.output));
+});
+
+/* Task to build sitemap.*/
+gulp.task('sitemap', function () {
+    gulp.src(paths.html.input)
+        .pipe(sitemap({
+            siteUrl: 'http://www.zzrot.com'
+        }))
+        .pipe(gulp.dest(paths.extras.output));
+});
+
+/* Task to edit html - currently removes*/
+gulp.task('htmlbuild', function () {
+    return gulp.src(paths.html.input)
+        .pipe(htmlbuild({
+            bs: function (block) {
+                block.end();
+            }
+        }))
         .pipe(gulp.dest(paths.html.output));
 });
 
@@ -219,10 +241,17 @@ gulp.task('watch', function () {
     gulp.watch(paths.styles.input, ['scss']);
 
     //Watch JS files
-    gulp.watch(paths.scripts.input, ['js']);
+    gulp.watch(paths.scripts.input, ['js', 'browser-sync-reload']);
+
+    //Watch Images
+    gulp.watch(paths.images.input, ['imagemin', 'browser-sync-reload']);
+
+	gulp.watch(paths.extras.input, ['move']);
 
 });
 
-//Default Task. -
-//Add all the tasks you would like to run on startup of the container here.
-gulp.task('default', ['move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch']);
+
+//Default Task. - Clean, then recompile every asset on startup, then start watch
+gulp.task('default', ['handlebars', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
+
+gulp.task('production', ['handlebars', 'sitemap', 'move', 'sass', 'imagemin', 'js']);
