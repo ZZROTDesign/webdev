@@ -272,4 +272,4 @@ gulp.task('watch', function () {
 //Default Task. - Clean, then recompile every asset on startup, then start watch
 gulp.task('default', ['handlebars', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
 
-gulp.task('production', ['handlebarsProd', 'sitemap', 'move', 'sass', 'imagemin', 'js']);
+gulp.task('production', ['handlebarsProd', 'sitemap', 'move', 'scss', 'imagemin', 'js']);
