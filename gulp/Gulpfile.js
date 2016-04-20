@@ -22,6 +22,7 @@ var paths = {
         input: 'app/dev/**/*.html',
         output: 'app/public/',
 		partials: 'app/dev/partials',
+		prod-partials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
 		hbs: 'app/dev/**/*.{html,hbs}'
     },
     images: {
@@ -154,6 +155,20 @@ gulp.task('handlebars', function () {
 		.pipe(gulp.dest(paths.html.output));
 });
 
+//Handle bars task without browserSync partial
+gulp.task('handlebars-prod', function () {
+	var templateData = {
+	    },
+	options = {
+		ignorePartials: true,
+		batch : paths.html.prod-partials
+	}
+
+	return gulp.src(paths.html.input)
+		.pipe(handlebars(templateData, options))
+		.pipe(gulp.dest(paths.html.output));
+});
+
 /*
 *
 * SCSS
@@ -257,4 +272,4 @@ gulp.task('watch', function () {
 //Default Task. - Clean, then recompile every asset on startup, then start watch
 gulp.task('default', ['handlebars', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
 
-gulp.task('production', ['handlebars', 'sitemap', 'move', 'sass', 'imagemin', 'js']);
+gulp.task('production', ['handlebars-prod', 'sitemap', 'move', 'sass', 'imagemin', 'js']);
