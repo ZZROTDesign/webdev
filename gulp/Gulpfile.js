@@ -22,7 +22,7 @@ var paths = {
         input: 'app/dev/**/*.html',
         output: 'app/public/',
 		partials: 'app/dev/partials',
-		prod-partials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
+		prodPartials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
 		hbs: 'app/dev/**/*.{html,hbs}'
     },
     images: {
@@ -156,12 +156,12 @@ gulp.task('handlebars', function () {
 });
 
 //Handle bars task without browserSync partial
-gulp.task('handlebars-prod', function () {
+gulp.task('handlebarsProd', function () {
 	var templateData = {
 	    },
 	options = {
 		ignorePartials: true,
-		batch : paths.html.prod-partials
+		batch : paths.html.prodPartials
 	}
 
 	return gulp.src(paths.html.input)
@@ -272,4 +272,4 @@ gulp.task('watch', function () {
 //Default Task. - Clean, then recompile every asset on startup, then start watch
 gulp.task('default', ['handlebars', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
 
-gulp.task('production', ['handlebars-prod', 'sitemap', 'move', 'sass', 'imagemin', 'js']);
+gulp.task('production', ['handlebarsProd', 'sitemap', 'move', 'sass', 'imagemin', 'js']);
