@@ -122,7 +122,7 @@ gulp.task('html', function () {
 gulp.task('sitemap', function () {
     gulp.src(paths.html.input)
         .pipe(sitemap({
-            siteUrl: 'https://zzrot.com'
+            siteUrl: 'https://seankilgarriff.com'
         }))
         .pipe(gulp.dest(paths.extras.output));
 });
