@@ -122,7 +122,7 @@ gulp.task('html', function () {
 gulp.task('sitemap', function () {
     gulp.src(paths.html.input)
         .pipe(sitemap({
-            siteUrl: 'http://www.zzrot.com'
+            siteUrl: 'https://zzrot.com'
         }))
         .pipe(gulp.dest(paths.extras.output));
 });
