@@ -78,9 +78,17 @@ var browserSync = require("browser-sync").create();
 var scsslint = require("gulp-scss-lint");
 var eslint = require('gulp-eslint');
 
+//Plumber Error Handling
+var plumber = require('gulp-plumber');
 
-
-
+function customPlumber() {
+  return plumber({
+    errorHandler: function(err) {
+      console.log(err.stack);
+      this.emit('end');
+    }
+  });
+}
 
 /*
 *
@@ -114,6 +122,7 @@ gulp.task('move-extras', function () {
 */
 gulp.task('html', function () {
     return gulp.src(paths.html.input)
+        .pipe(customPlumber())
         .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest(paths.html.output));
 });
@@ -121,8 +130,9 @@ gulp.task('html', function () {
 /* Task to build sitemap.*/
 gulp.task('sitemap', function () {
     gulp.src(paths.html.input)
+        .pipe(customPlumber())
         .pipe(sitemap({
-            siteUrl: 'https://seankilgarriff.com'
+            siteUrl: 'https://zzrot.com'
         }))
         .pipe(gulp.dest(paths.extras.output));
 });
@@ -130,6 +140,7 @@ gulp.task('sitemap', function () {
 /* Task to edit html - currently removes*/
 gulp.task('htmlbuild', function () {
     return gulp.src(paths.html.input)
+        .pipe(customPlumber())
         .pipe(htmlbuild({
             bs: function (block) {
                 block.end();
@@ -143,28 +154,40 @@ gulp.task('htmlbuild', function () {
 //HANDLEBARS
 gulp.task('handlebars', function () {
 
-	var templateData = {
-	    },
-	options = {
-		ignorePartials: true,
-		batch : paths.html.partials
-	}
-
+  try {
+  	var templateData = {
+  	    },
+  	options = {
+  		ignorePartials: true,
+  		batch : paths.html.partials
+  	}
+  }
+  catch(err) {
+    return gulp.src(paths.html.input)
+      .pipe(customPlumber());
+  }
 	return gulp.src(paths.html.input)
+    .pipe(customPlumber())
 		.pipe(handlebars(templateData, options))
 		.pipe(gulp.dest(paths.html.output));
 });
 
 //Handle bars task without browserSync partial
 gulp.task('handlebarsProd', function () {
-	var templateData = {
-	    },
-	options = {
-		ignorePartials: true,
-		batch : paths.html.prodPartials
-	}
-
+  try {
+  	var templateData = {
+  	    },
+  	options = {
+  		ignorePartials: true,
+  		batch : paths.html.prodPartials
+  	}
+  }
+  catch(err) {
+    return gulp.src(paths.html.input)
+      .pipe(customPlumber());
+  }
 	return gulp.src(paths.html.input)
+    .pipe(customPlumber())
 		.pipe(handlebars(templateData, options))
 		.pipe(gulp.dest(paths.html.output));
 });
@@ -179,11 +202,13 @@ gulp.task('handlebarsProd', function () {
 
 gulp.task('scsslint', function () {
 	gulp.src(paths.styles.lint)
+    .pipe(customPlumber())
 	  .pipe(scsslint());
 });
 
 gulp.task('scss', ['scsslint'], function () {
     return gulp.src(paths.styles.input)
+        .pipe(customPlumber())
         .pipe(sass({
             includePaths: [].concat(bourbon, neat)
         }))
@@ -203,6 +228,7 @@ gulp.task('scss', ['scsslint'], function () {
 */
 gulp.task('imagemin', function () {
     return gulp.src(paths.images.input)
+        .pipe(customPlumber())
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
