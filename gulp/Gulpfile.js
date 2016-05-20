@@ -88,11 +88,12 @@ var plumber = require('gulp-plumber');
 * Also logs all errors -- docker-compose logs
 *
 */
-function customPlumber() {
+function customPlumber(message) {
   return plumber({
       errorHandler: function(err) {
-          console.log(err.stack);
-          browserSync.notify(err.stack, 150000);
+          message+= "  ----  \n" + err.stack;
+          console.log(err);
+          browserSync.notify(message, 150000);
           this.emit('end');
       }
   });
@@ -120,6 +121,7 @@ gulp.task('move', ['move-extras']);
 //Extra files - robot.txt, etc
 gulp.task('move-extras', function () {
     return gulp.src(paths.extras.input)
+        .pipe(customPlumber(''))
         .pipe(gulp.dest(paths.extras.output));
 });
 
@@ -130,7 +132,7 @@ gulp.task('move-extras', function () {
 */
 gulp.task('html', function () {
     return gulp.src(paths.html.input)
-        .pipe(customPlumber('Error with HTML minifying'))
+        .pipe(customPlumber('ERROR WHILE MINIFYING HTML'))
         .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest(paths.html.output));
 });
@@ -138,7 +140,7 @@ gulp.task('html', function () {
 /* Task to build sitemap.*/
 gulp.task('sitemap', function () {
     gulp.src(paths.html.input)
-        .pipe(customPlumber('Error building sitemap'))
+        .pipe(customPlumber('ERROR WHILE BUILDING SITEMAP'))
         .pipe(sitemap({
             siteUrl: 'https://zzrot.com'
         }))
@@ -148,7 +150,7 @@ gulp.task('sitemap', function () {
 /* Task to edit html - currently removes*/
 gulp.task('htmlbuild', function () {
     return gulp.src(paths.html.input)
-        .pipe(customPlumber('Error with htmlbuild'))
+        .pipe(customPlumber('ERROR WHILE EDITING HTML'))
         .pipe(htmlbuild({
             bs: function (block) {
                 block.end();
@@ -172,10 +174,10 @@ gulp.task('handlebars', function () {
   }
   catch(err) {
     return gulp.src(paths.html.input)
-      .pipe(customPlumber('Error with Handlebar'));
+      .pipe(customPlumber('HANDLEBARS ERROR'));
   }
 	return gulp.src(paths.html.input)
-    .pipe(customPlumber('Error with Handlebar'))
+    .pipe(customPlumber('HANDLEBARS ERROR'))
 		.pipe(handlebars(templateData, options))
 		.pipe(gulp.dest(paths.html.output));
 });
@@ -192,10 +194,10 @@ gulp.task('handlebarsProd', function () {
   }
   catch(err) {
     return gulp.src(paths.html.input)
-      .pipe(customPlumber('Error with handlebars'));
+      .pipe(customPlumber('ERROR WITH HANDLEBARS'));
   }
 	return gulp.src(paths.html.input)
-    .pipe(customPlumber('Error with handlebars'))
+    .pipe(customPlumber('ERROR WITH HANDLEBARS'))
 		.pipe(handlebars(templateData, options))
 		.pipe(gulp.dest(paths.html.output));
 });
@@ -210,13 +212,13 @@ gulp.task('handlebarsProd', function () {
 
 gulp.task('scsslint', function () {
 	gulp.src(paths.styles.lint)
-    .pipe(customPlumber("SCSS Linter error"))
+    .pipe(customPlumber("ERROR WHILE LINTING SCSS"))
 	  .pipe(scsslint());
 });
 
 gulp.task('scss', ['scsslint'], function () {
     return gulp.src(paths.styles.input)
-        .pipe(customPlumber('SCSS linter error'))
+        .pipe(customPlumber('ERROR WHILE LINTING SCSS'))
         .pipe(sass({
             includePaths: [].concat(bourbon, neat)
         }))
@@ -236,7 +238,7 @@ gulp.task('scss', ['scsslint'], function () {
 */
 gulp.task('imagemin', function () {
     return gulp.src(paths.images.input)
-        .pipe(customPlumber())
+        .pipe(customPlumber('ERROR WHILE MIMIZING IMAGES'))
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}],
@@ -254,6 +256,7 @@ gulp.task('imagemin', function () {
 // LINTER
 gulp.task('eslint', function () {
 	return gulp.src(paths.scripts.input)
+            .pipe(customPlumber('ERROR WITH ESLINT'))
 			.pipe(eslint())
 			.pipe(eslint.format())
 			.pipe(eslint.failAfterError());
@@ -261,6 +264,7 @@ gulp.task('eslint', function () {
 
 gulp.task('js', ['eslint'], function () {
     return gulp.src(paths.scripts.input)
+        .pipe(customPlumber('ERROR WITH ESLINT'))
         .pipe(concat('main.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest(paths.scripts.output));
