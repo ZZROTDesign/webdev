@@ -78,15 +78,28 @@ var browserSync = require("browser-sync").create();
 var scsslint = require("gulp-scss-lint");
 var eslint = require('gulp-eslint');
 
+//Error Notifying
+var notify = require('gulp-notify');
+
 //Plumber Error Handling
 var plumber = require('gulp-plumber');
 
 function customPlumber() {
   return plumber({
+      // Next line is used for gulp-no
+      //errorHandler: notify.onError("Error: <%= error.message %>"),
+      errorHandler: function(err) {
+          console.log(err.stack);
+          browserSync.notify(err.stack, 150000);
+          this.emit('end');
+      }
+
+/*
     errorHandler: function(err) {
       console.log(err.stack);
       this.emit('end');
     }
+    */
   });
 }
 
@@ -122,7 +135,7 @@ gulp.task('move-extras', function () {
 */
 gulp.task('html', function () {
     return gulp.src(paths.html.input)
-        .pipe(customPlumber())
+        .pipe(customPlumber('Error with HTML minifying'))
         .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(gulp.dest(paths.html.output));
 });
@@ -130,7 +143,7 @@ gulp.task('html', function () {
 /* Task to build sitemap.*/
 gulp.task('sitemap', function () {
     gulp.src(paths.html.input)
-        .pipe(customPlumber())
+        .pipe(customPlumber('Error building sitemap'))
         .pipe(sitemap({
             siteUrl: 'https://zzrot.com'
         }))
@@ -140,7 +153,7 @@ gulp.task('sitemap', function () {
 /* Task to edit html - currently removes*/
 gulp.task('htmlbuild', function () {
     return gulp.src(paths.html.input)
-        .pipe(customPlumber())
+        .pipe(customPlumber('Error with htmlbuild'))
         .pipe(htmlbuild({
             bs: function (block) {
                 block.end();
@@ -164,10 +177,10 @@ gulp.task('handlebars', function () {
   }
   catch(err) {
     return gulp.src(paths.html.input)
-      .pipe(customPlumber());
+      .pipe(customPlumber('Error with Handlebar'));
   }
 	return gulp.src(paths.html.input)
-    .pipe(customPlumber())
+    .pipe(customPlumber('Error with Handlebar'))
 		.pipe(handlebars(templateData, options))
 		.pipe(gulp.dest(paths.html.output));
 });
@@ -184,10 +197,10 @@ gulp.task('handlebarsProd', function () {
   }
   catch(err) {
     return gulp.src(paths.html.input)
-      .pipe(customPlumber());
+      .pipe(customPlumber('Error with handlebars'));
   }
 	return gulp.src(paths.html.input)
-    .pipe(customPlumber())
+    .pipe(customPlumber('Error with handlebars'))
 		.pipe(handlebars(templateData, options))
 		.pipe(gulp.dest(paths.html.output));
 });
@@ -202,13 +215,13 @@ gulp.task('handlebarsProd', function () {
 
 gulp.task('scsslint', function () {
 	gulp.src(paths.styles.lint)
-    .pipe(customPlumber())
+    .pipe(customPlumber("SCSS Linter error"))
 	  .pipe(scsslint());
 });
 
 gulp.task('scss', ['scsslint'], function () {
     return gulp.src(paths.styles.input)
-        .pipe(customPlumber())
+        .pipe(customPlumber('SCSS linter error'))
         .pipe(sass({
             includePaths: [].concat(bourbon, neat)
         }))
