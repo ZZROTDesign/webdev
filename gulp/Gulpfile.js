@@ -78,28 +78,23 @@ var browserSync = require("browser-sync").create();
 var scsslint = require("gulp-scss-lint");
 var eslint = require('gulp-eslint');
 
-//Error Notifying
-var notify = require('gulp-notify');
-
 //Plumber Error Handling
 var plumber = require('gulp-plumber');
 
+/*
+*
+* ERROR HANDLING
+* Creates a browserSync notification for 150 seconds
+* Also logs all errors -- docker-compose logs
+*
+*/
 function customPlumber() {
   return plumber({
-      // Next line is used for gulp-no
-      //errorHandler: notify.onError("Error: <%= error.message %>"),
       errorHandler: function(err) {
           console.log(err.stack);
           browserSync.notify(err.stack, 150000);
           this.emit('end');
       }
-
-/*
-    errorHandler: function(err) {
-      console.log(err.stack);
-      this.emit('end');
-    }
-    */
   });
 }
 
