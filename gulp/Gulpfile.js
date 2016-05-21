@@ -25,6 +25,7 @@ var paths = {
 		prodPartials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
 		hbs: 'app/dev/**/*.{html,hbs}',
         index: 'app/public/index.html',
+        inject: './inject.html'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -284,7 +285,7 @@ gulp.task('js', ['eslint'], function () {
 // Inject BrowserSync in Development
 gulp.task('index-inject', function () {
     var target = gulp.src('./src/index.html');
-    var script = './inject.html';
+    var script = gulp.src(paths.html.inject);
     return target.pipe(inject(script))
         .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
         .pipe(gulp.dest('./src'));
