@@ -23,7 +23,8 @@ var paths = {
         output: 'app/public/',
 		partials: 'app/dev/partials',
 		prodPartials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
-		hbs: 'app/dev/**/*.{html,hbs}'
+		hbs: 'app/dev/**/*.{html,hbs}',
+        index: 'app/public/index.html',
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -73,6 +74,9 @@ var uglify = require('gulp-uglify');
 
 //Browsersync
 var browserSync = require("browser-sync").create();
+
+//gulp-inject
+var inject = require('gulp-inject');
 
 //Linters
 var scsslint = require("gulp-scss-lint");
@@ -270,11 +274,22 @@ gulp.task('js', ['eslint'], function () {
         .pipe(gulp.dest(paths.scripts.output));
 });
 
+
 /*
 *
 * BROWSERSYNC AND RELOAD
 *
 */
+
+// Inject BrowserSync in Development
+gulp.task('index-inject', function () {
+    var target = gulp.src('./src/index.html');
+    var script = './inject.html';
+    return target.pipe(inject(script))
+        .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
+        .pipe(gulp.dest('./src'));
+});
+
 gulp.task('browser-sync', function () {
     browserSync.init({});
 });
@@ -308,6 +323,6 @@ gulp.task('watch', function () {
 
 
 //Default Task. - Clean, then recompile every asset on startup, then start watch
-gulp.task('default', ['handlebars', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
+gulp.task('default', ['handlebars', 'move', 'index-inject', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
 
 gulp.task('production', ['handlebarsProd', 'sitemap', 'move', 'scss', 'imagemin', 'js']);
