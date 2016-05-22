@@ -26,7 +26,8 @@ var paths = {
 		hbs: 'app/dev/**/*.{html,hbs}',
         index: 'app/public/index.html',
         //inject: './inject.html'
-        inject: 'app/dev/inject/inject.html'
+        inject: 'app/dev/inject/inject.html',
+        test: './inject.html'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -285,10 +286,11 @@ gulp.task('js', ['eslint'], function () {
 
 // Inject BrowserSync in Development
 gulp.task('index-inject', function () {
-    var target = gulp.src(paths.html.index);
+    //var target = gulp.src(paths.html.index);
+    var target = gulp.src(paths.html.test);
     var script = gulp.src([paths.html.inject], {read: true});
-    console.log("Script: \n" + script);
-    console.log("Target: \n" + target);
+    console.log("Script: " + script);
+    console.log("Target: " + target);
     return target.pipe(inject(script))
         .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
         .pipe(gulp.dest(paths.html.output));
