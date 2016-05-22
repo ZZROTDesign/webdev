@@ -25,7 +25,8 @@ var paths = {
 		prodPartials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
 		hbs: 'app/dev/**/*.{html,hbs}',
         index: 'app/public/index.html',
-        inject: './inject.html'
+        //inject: './inject.html'
+        inject: 'app/dev/assets/*.html'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -285,7 +286,7 @@ gulp.task('js', ['eslint'], function () {
 // Inject BrowserSync in Development
 gulp.task('index-inject', function () {
     var target = gulp.src('./src/index.html');
-    var script = gulp.src(paths.html.inject);
+    var script = gulp.src([paths.html.inject], {read: true});
     return target.pipe(inject(script))
         .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
         .pipe(gulp.dest('./src'));
@@ -307,7 +308,7 @@ gulp.task('browser-sync-reload', function () {
 gulp.task('watch', function () {
 
     //Watch HTML files
-    gulp.watch(paths.html.hbs, ['handlebars', 'browser-sync-reload']);
+    gulp.watch(paths.html.hbs, ['handlebars', 'index-inject', 'browser-sync-reload']);
 
     //Watch Sass files
     gulp.watch(paths.styles.input, ['scss']);
