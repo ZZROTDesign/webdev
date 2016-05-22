@@ -24,9 +24,9 @@ var paths = {
 		partials: 'app/dev/partials',
 		prodPartials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
 		hbs: 'app/dev/**/*.{html,hbs}',
-        index: 'app/dev/index.html',
+        index: 'app/public/index.html',
         //inject: './inject.html'
-        inject: 'app/dev/assets/*.html'
+        inject: 'app/dev/index.html/index.html'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -289,7 +289,7 @@ gulp.task('index-inject', function () {
     var script = gulp.src([paths.html.inject], {read: true});
     return target.pipe(inject(script))
         .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
-        .pipe(gulp.dest(paths.html.index));
+        .pipe(gulp.dest(target));
 });
 
 gulp.task('browser-sync', function () {
