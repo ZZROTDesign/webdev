@@ -80,6 +80,7 @@ var browserSync = require("browser-sync").create();
 
 //gulp-inject
 var inject = require('gulp-inject');
+var fs = require('fs');
 
 //Linters
 var scsslint = require("gulp-scss-lint");
@@ -288,9 +289,9 @@ gulp.task('js', ['eslint'], function () {
 gulp.task('index-inject', function () {
     //var target = gulp.src(paths.html.index);
     var target = gulp.src(paths.html.test);
-    var script = gulp.src([paths.html.inject], {read: true});
-    console.log("Script: " + script);
-    console.log("Target: " + target);
+    var script = gulp.src([paths.html.inject], {read: false});
+    //console.log("Script: " + script.toString());
+    //console.log("Target: " + target.toString());
     return target.pipe(inject(script))
         .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
         .pipe(gulp.dest(paths.html.output));

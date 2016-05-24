@@ -1,12 +1,12 @@
-FROM alpine:edge
+FROM alpine
 MAINTAINER ZZROT LLC <docker@zzrot.com>
 
 
 ENV BUILD_PACKAGES nodejs bash curl-dev ruby-dev libc-dev build-base git python tar imagemagick libpng-dev
 ENV RUBY_PACKAGES ruby ruby-irb ruby-json ruby-rake ruby-io-console ruby-bundler libstdc++ tzdata
 
-RUN apk --no-cache add $BUILD_PACKAGES \
-		&& apk --no-cache add $RUBY_PACKAGES
+RUN apk update && apk add $BUILD_PACKAGES \
+		&& apk add $RUBY_PACKAGES
 
 #Copy over the default Package.json
 COPY ./gulp/package.json /usr/src/
