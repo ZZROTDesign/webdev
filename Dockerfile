@@ -21,8 +21,7 @@ RUN npm update \
 		&& npm install -g gulp \
 		&& npm cache clean \
 		&& gem install --no-rdoc --no-ri bundler \
-		&& gem install --no-rdoc --no-ri scss_lint \
-		&& gem install --save-dev
+		&& gem install --no-rdoc --no-ri scss_lint
 
 #Copy over, and grant executable permission to the startup script
 COPY ./entrypoint.sh /

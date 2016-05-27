@@ -290,6 +290,9 @@ gulp.task('index-inject', function () {
     //var target = gulp.src(paths.html.index);
     var target = gulp.src(paths.html.test);
     var script = gulp.src([paths.html.inject], {read: false});
+    //var browserSyncScript = gulp.src(["./inject.js"], {read: true});
+    //var browserSyncScript = fs.readFile("./inject.js", "utf-8");
+    console.log("Script: " + JSON.stringify(script));
     //console.log("Script: " + script.toString());
     //console.log("Target: " + target.toString());
     return target.pipe(inject(script))
