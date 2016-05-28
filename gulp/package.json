@@ -40,6 +40,9 @@
     "node-bourbon": "^4.2.8",
     "node-neat": "^1.7.2",
     "require-dir": "^0.3.0",
-    "gulp-plumber": "^1.1.0"
+    "gulp-plumber": "^1.1.0",
+    "gulp-html-replace": "^1.6.0",
+    "fs": "^0.0.2"
+
   }
 }

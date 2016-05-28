@@ -23,7 +23,11 @@ var paths = {
         output: 'app/public/',
 		partials: 'app/dev/partials',
 		prodPartials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
-		hbs: 'app/dev/**/*.{html,hbs}'
+		hbs: 'app/dev/**/*.{html,hbs}',
+        index: 'app/public/index.html',
+        inject: 'app/dev/assets/inject/inject.html',
+        test: './inject.html',
+        script: 'app/dev/assets/inject/inject.html'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -73,6 +77,12 @@ var uglify = require('gulp-uglify');
 
 //Browsersync
 var browserSync = require("browser-sync").create();
+
+//Gulp html-replace
+var htmlReplace = require('gulp-html-replace');
+
+// Filestream reading
+var fs = require('fs');
 
 //Linters
 var scsslint = require("gulp-scss-lint");
@@ -270,11 +280,23 @@ gulp.task('js', ['eslint'], function () {
         .pipe(gulp.dest(paths.scripts.output));
 });
 
+
 /*
 *
 * BROWSERSYNC AND RELOAD
 *
 */
+
+gulp.task('replace', function() {
+    return gulp.src(paths.html.index)
+        .pipe(customPlumber("Error at INJECT"))
+        .pipe(htmlReplace({
+            'js': fs.readFileSync(paths.html.script, 'utf8')
+        }))
+            .pipe(gulp.dest(paths.html.output));
+});
+
+
 gulp.task('browser-sync', function () {
     browserSync.init({});
 });
@@ -291,7 +313,7 @@ gulp.task('browser-sync-reload', function () {
 gulp.task('watch', function () {
 
     //Watch HTML files
-    gulp.watch(paths.html.hbs, ['handlebars', 'browser-sync-reload']);
+    gulp.watch(paths.html.hbs, ['handlebars','replace', 'browser-sync-reload']);
 
     //Watch Sass files
     gulp.watch(paths.styles.input, ['scss']);
@@ -308,6 +330,6 @@ gulp.task('watch', function () {
 
 
 //Default Task. - Clean, then recompile every asset on startup, then start watch
-gulp.task('default', ['handlebars', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
+gulp.task('default', ['handlebars', 'replace', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
 
 gulp.task('production', ['handlebarsProd', 'sitemap', 'move', 'scss', 'imagemin', 'js']);
