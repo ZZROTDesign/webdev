@@ -25,7 +25,6 @@ var paths = {
 		prodPartials: ['app/dev/partials, !app/dev/partials/bs.hbs'],
 		hbs: 'app/dev/**/*.{html,hbs}',
         index: 'app/public/index.html',
-        //inject: './inject.html'
         inject: 'app/dev/assets/inject/inject.html',
         test: './inject.html',
         script: 'app/dev/assets/inject/inject.html'
@@ -78,15 +77,12 @@ var uglify = require('gulp-uglify');
 
 //Browsersync
 var browserSync = require("browser-sync").create();
-var jquery = require('gulp-jquery');
 
-//gulp-inject
-var inject = require('gulp-inject');
+//Gulp html-replace
 var htmlReplace = require('gulp-html-replace');
-var rename = require('gulp-rename');
+
+// Filestream reading
 var fs = require('fs');
-//var inject = require('gulp-inject-string');
-//var fs = require('fs');
 
 //Linters
 var scsslint = require("gulp-scss-lint");
@@ -291,38 +287,7 @@ gulp.task('js', ['eslint'], function () {
 *
 */
 
-// Inject BrowserSync in Development
-/*
-gulp.task('index-inject', function () {
-    //var target = gulp.src(paths.html.index);
-    var target = gulp.src(paths.html.output);
-    var script = gulp.src(paths.html.test, {read: false});
-    //var browserSyncScript = gulp.src(["./inject.js"], {read: true});
-    //var browserSyncScript = fs.readFile("./inject.js", "utf-8");
-    console.log("Script: " + script);
-    //console.log("Script: " + script.toString());
-    //console.log("Target: " + target.toString());
-    return target.pipe(inject(script))
-        .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
-        .pipe(gulp.dest(paths.html.output));
-});
-*/
-//gulp.task('jquery-inject', function readTextFile('./inject.js') {
-
-//});
-
-gulp.task('index-inject', function() {
-    //var script = gulp.src(paths.html.script, {read: true});
-    //console.log("Script: " + script);
-    gulp.src(paths.html.index)
-        .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
-        .pipe(inject(gulp.src(paths.html.script, {read: false})))
-        .pipe(gulp.dest(paths.html.output));
-});
-
 gulp.task('replace', function() {
-    var check = fs.readFileSync(paths.html.script, 'utf8');
-    console.log("Replace script: " + check);
     return gulp.src(paths.html.index)
         .pipe(customPlumber("Error at INJECT"))
         .pipe(htmlReplace({
@@ -331,13 +296,6 @@ gulp.task('replace', function() {
             .pipe(gulp.dest(paths.html.output));
 });
 
-/*
-function readTextFile(file) {
-    jquery-inject.get(file, function(data) {
-        return data;
-    });
-}
-*/
 
 gulp.task('browser-sync', function () {
     browserSync.init({});
