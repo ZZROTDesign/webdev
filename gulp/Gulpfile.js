@@ -83,6 +83,9 @@ var jquery = require('gulp-jquery');
 //gulp-inject
 var inject = require('gulp-inject');
 var htmlReplace = require('gulp-html-replace');
+var rename = require('gulp-rename');
+var fs = require('fs');
+//var inject = require('gulp-inject-string');
 //var fs = require('fs');
 
 //Linters
@@ -309,20 +312,23 @@ gulp.task('index-inject', function () {
 //});
 
 gulp.task('index-inject', function() {
-    var script = gulp.src(paths.html.script, {read: true});
-    console.log("Script: " + script);
+    //var script = gulp.src(paths.html.script, {read: true});
+    //console.log("Script: " + script);
     gulp.src(paths.html.index)
         .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
         .pipe(inject(gulp.src(paths.html.script, {read: false})))
         .pipe(gulp.dest(paths.html.output));
 });
 
-gulp.task('inject', function() {
+gulp.task('replace', function() {
+    var check = fs.readFileSync(paths.html.script, 'utf8');
+    console.log("Replace script: " + check);
     return gulp.src(paths.html.index)
+        .pipe(customPlumber("Error at INJECT"))
         .pipe(htmlReplace({
-            'js': paths.html.script
+            'js': fs.readFileSync(paths.html.script, 'utf8')
         }))
-        .pipe(gulp.dest(paths.html.output));
+            .pipe(gulp.dest(paths.html.output));
 });
 
 /*
@@ -349,7 +355,7 @@ gulp.task('browser-sync-reload', function () {
 gulp.task('watch', function () {
 
     //Watch HTML files
-    gulp.watch(paths.html.hbs, ['handlebars', 'index-inject','inject', 'browser-sync-reload']);
+    gulp.watch(paths.html.hbs, ['handlebars','replace', 'browser-sync-reload']);
 
     //Watch Sass files
     gulp.watch(paths.styles.input, ['scss']);
@@ -366,6 +372,6 @@ gulp.task('watch', function () {
 
 
 //Default Task. - Clean, then recompile every asset on startup, then start watch
-gulp.task('default', ['handlebars', 'inject', 'move', 'index-inject', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
+gulp.task('default', ['handlebars', 'replace', 'move', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
 
 gulp.task('production', ['handlebarsProd', 'sitemap', 'move', 'scss', 'imagemin', 'js']);

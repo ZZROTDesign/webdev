@@ -43,6 +43,9 @@
     "gulp-plumber": "^1.1.0",
     "gulp-inject": "^4.1.0",
     "gulp-jquery": "^1.1.2",
-    "gulp-html-replace": "^1.6.0"
+    "gulp-html-replace": "^1.6.0",
+    "gulp-inject-string": "^1.1.0",
+    "fs": "^0.0.2"
+
   }
 }
