@@ -26,8 +26,9 @@ var paths = {
 		hbs: 'app/dev/**/*.{html,hbs}',
         index: 'app/public/index.html',
         //inject: './inject.html'
-        inject: 'app/dev/inject/inject.html',
-        test: './inject.html'
+        inject: 'app/dev/assets/inject/inject.html',
+        test: './inject.html',
+        script: 'app/dev/assets/inject/inject.html'
     },
     images: {
         input: 'app/dev/assets/images/**/*',
@@ -77,10 +78,12 @@ var uglify = require('gulp-uglify');
 
 //Browsersync
 var browserSync = require("browser-sync").create();
+var jquery = require('gulp-jquery');
 
 //gulp-inject
 var inject = require('gulp-inject');
-var fs = require('fs');
+var htmlReplace = require('gulp-html-replace');
+//var fs = require('fs');
 
 //Linters
 var scsslint = require("gulp-scss-lint");
@@ -286,19 +289,49 @@ gulp.task('js', ['eslint'], function () {
 */
 
 // Inject BrowserSync in Development
+/*
 gulp.task('index-inject', function () {
     //var target = gulp.src(paths.html.index);
-    var target = gulp.src(paths.html.test);
-    var script = gulp.src([paths.html.inject], {read: false});
+    var target = gulp.src(paths.html.output);
+    var script = gulp.src(paths.html.test, {read: false});
     //var browserSyncScript = gulp.src(["./inject.js"], {read: true});
     //var browserSyncScript = fs.readFile("./inject.js", "utf-8");
-    console.log("Script: " + JSON.stringify(script));
+    console.log("Script: " + script);
     //console.log("Script: " + script.toString());
     //console.log("Target: " + target.toString());
     return target.pipe(inject(script))
         .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
         .pipe(gulp.dest(paths.html.output));
 });
+*/
+//gulp.task('jquery-inject', function readTextFile('./inject.js') {
+
+//});
+
+gulp.task('index-inject', function() {
+    var script = gulp.src(paths.html.script, {read: true});
+    console.log("Script: " + script);
+    gulp.src(paths.html.index)
+        .pipe(customPlumber('ERROR WHILE INJECTING BROWSERSYNC'))
+        .pipe(inject(gulp.src(paths.html.script, {read: false})))
+        .pipe(gulp.dest(paths.html.output));
+});
+
+gulp.task('inject', function() {
+    return gulp.src(paths.html.index)
+        .pipe(htmlReplace({
+            'js': paths.html.script
+        }))
+        .pipe(gulp.dest(paths.html.output));
+});
+
+/*
+function readTextFile(file) {
+    jquery-inject.get(file, function(data) {
+        return data;
+    });
+}
+*/
 
 gulp.task('browser-sync', function () {
     browserSync.init({});
@@ -316,7 +349,7 @@ gulp.task('browser-sync-reload', function () {
 gulp.task('watch', function () {
 
     //Watch HTML files
-    gulp.watch(paths.html.hbs, ['handlebars', 'index-inject', 'browser-sync-reload']);
+    gulp.watch(paths.html.hbs, ['handlebars', 'index-inject','inject', 'browser-sync-reload']);
 
     //Watch Sass files
     gulp.watch(paths.styles.input, ['scss']);
@@ -333,6 +366,6 @@ gulp.task('watch', function () {
 
 
 //Default Task. - Clean, then recompile every asset on startup, then start watch
-gulp.task('default', ['handlebars', 'move', 'index-inject', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
+gulp.task('default', ['handlebars', 'inject', 'move', 'index-inject', 'browser-sync', 'scss', 'imagemin', 'js', 'watch', 'sitemap']);
 
 gulp.task('production', ['handlebarsProd', 'sitemap', 'move', 'scss', 'imagemin', 'js']);

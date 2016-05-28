@@ -41,6 +41,8 @@
     "node-neat": "^1.7.2",
     "require-dir": "^0.3.0",
     "gulp-plumber": "^1.1.0",
-    "gulp-inject": "^4.1.0"
+    "gulp-inject": "^4.1.0",
+    "gulp-jquery": "^1.1.2",
+    "gulp-html-replace": "^1.6.0"
   }
 }
